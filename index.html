@@ -1,198 +1,1031 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>WCO Degreaser – Quality Aware Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SugarFlow - Farmer Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f2f4f8;
-}
-.container {
-    width: 750px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.15);
-}
-h2, h3 {
-    text-align: center;
-}
-input, button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-}
-button {
-    background: #2b7cff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-button:hover {
-    background: #1a5ed8;
-}
-.result {
-    margin-top: 20px;
-    background: #eef3ff;
-    padding: 15px;
-    border-radius: 6px;
-}
-p {
-    margin: 6px 0;
-}
-.note {
-    font-size: 13px;
-    color: #444;
-}
-</style>
+        :root {
+            --primary: #2d7d5c;
+            --primary-light: #3d9970;
+            --primary-pale: #e8f4f0;
+            --secondary: #059669;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f9fafb;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem 1.5rem 1rem;
+            border-radius: 0 0 2rem 2rem;
+        }
+
+        .greeting {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .greeting-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .weather-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .weather-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .weather-icon {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .weather-info h3 {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .weather-info p {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Content */
+        .content {
+            padding: 1.5rem;
+        }
+
+        /* Action Cards */
+        .action-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-card {
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .action-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(45, 125, 92, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .action-icon.maturity {
+            color: var(--primary);
+            background: var(--primary-pale);
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto 0.75rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-icon.truck {
+            color: var(--warning);
+            background: #fef3c7;
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto 0.75rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        /* Overview Grid */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .overview-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .overview-card.ready {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .overview-card.brix {
+            background: #fefce8;
+            border-color: #fbbf24;
+        }
+
+        .overview-card.transport {
+            background: #eff6ff;
+            border-color: var(--secondary);
+        }
+
+        .overview-card.season {
+            background: white;
+            border: 1px solid var(--border);
+        }
+
+        .overview-icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .overview-card.brix .overview-value {
+            color: #d97706;
+        }
+
+        .overview-card.transport .overview-value {
+            color: var(--secondary);
+        }
+
+        /* Activity */
+        .activity-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .activity-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .activity-dot.ready {
+            background: var(--success);
+        }
+
+        .activity-dot.transit {
+            background: var(--secondary);
+        }
+
+        .activity-dot.notready {
+            background: var(--warning);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-field {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-action {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .activity-time {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .activity-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            white-space: nowrap;
+        }
+
+        .activity-status.ready {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .activity-status.transit {
+            background: #dbeafe;
+            color: var(--secondary);
+        }
+
+        .activity-status.notready {
+            background: #fed7aa;
+            color: #d97706;
+        }
+
+        .activity-time-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 2rem 2rem 0 0;
+            animation: slideUp 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: 2rem 2rem 0 0;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .modal-body {
+            padding: 2rem 1.5rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Location Card */
+        .location-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .location-icon {
+            width: 3rem;
+            height: 3rem;
+            background: var(--primary-pale);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .location-info h4 {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .location-info p {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        /* Truck List */
+        .truck-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .truck-item:hover {
+            border-color: var(--primary);
+            background: var(--primary-pale);
+        }
+
+        .truck-item.selected {
+            border-color: var(--primary);
+            background: var(--primary-pale);
+        }
+
+        .truck-icon {
+            width: 3rem;
+            height: 3rem;
+            background: var(--primary-pale);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .truck-info {
+            flex: 1;
+        }
+
+        .truck-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .truck-details {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .truck-radio {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .truck-item.selected .truck-radio {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+
+        /* Maturity Test */
+        .maturity-ready {
+            text-align: center;
+            padding: 3rem 1.5rem;
+        }
+
+        .maturity-icon {
+            width: 5rem;
+            height: 5rem;
+            background: var(--primary-pale);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .maturity-ready h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .maturity-ready p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .how-it-works {
+            background: var(--light);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .how-it-works h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 2rem;
+            height: 2rem;
+            background: var(--primary-pale);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .step-content h5 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Measurement Input */
+        .measurement-input {
+            background: var(--light);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .measurement-input label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .measurement-info {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Button */
+        button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-pale);
+        }
+
+        /* Result */
+        .result-message {
+            background: #f0fdf4;
+            border: 1px solid var(--success);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .result-message.show {
+            display: block;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-message p {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (min-width: 650px) {
+            .container {
+                border-radius: 1.5rem;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .modal-content {
+            border-radius: 2rem 2rem 0 0;
+        }
+
+        @media (max-width: 600px) {
+            .modal.active {
+                align-items: stretch;
+            }
+
+            .modal-content {
+                border-radius: 0;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="greeting">Good morning,</div>
+            <div class="greeting-name">Farmer Raju 👋</div>
+            <div class="weather-card">
+                <div class="weather-item">
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-info">
+                        <h3>Today</h3>
+                        <p>32°C Sunny</p>
+                    </div>
+                </div>
+                <div class="weather-item">
+                    <div class="weather-icon">💧</div>
+                    <div class="weather-info">
+                        <h3>Humidity</h3>
+                        <p>65%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="container">
+        <!-- Content -->
+        <div class="content">
+            <!-- Action Cards -->
+            <div class="action-cards">
+                <a class="action-card" onclick="openMaturityModal()">
+                    <div class="action-icon maturity">🍃</div>
+                    <h3>Check Maturity</h3>
+                    <p>Test crop readiness</p>
+                </a>
+                <a class="action-card" onclick="openTransportModal()">
+                    <div class="action-icon truck">🚛</div>
+                    <h3>Request Truck</h3>
+                    <p>Book transport</p>
+                </a>
+            </div>
 
-<h2>Waste Cooking Oil–Based Degreaser Calculator</h2>
+            <!-- Field Overview -->
+            <div class="section">
+                <h2 class="section-title">Field Overview</h2>
+                <div class="overview-grid">
+                    <div class="overview-card ready">
+                        <div class="overview-icon">🍃</div>
+                        <div class="overview-label">Fields Ready</div>
+                        <div class="overview-value">3 of 5</div>
+                    </div>
+                    <div class="overview-card brix">
+                        <div class="overview-icon">🥤</div>
+                        <div class="overview-label">Avg. Brix</div>
+                        <div class="overview-value">18.5°</div>
+                    </div>
+                    <div class="overview-card transport">
+                        <div class="overview-icon">🚛</div>
+                        <div class="overview-label">Pending Transport</div>
+                        <div class="overview-value">2</div>
+                    </div>
+                    <div class="overview-card season">
+                        <div class="overview-icon">📊</div>
+                        <div class="overview-label">This Season</div>
+                        <div class="overview-value">42 tons</div>
+                    </div>
+                </div>
+            </div>
 
-<p>
-This tool computes chemical requirements and process parameters for an
-eco-friendly industrial degreaser, considering both oil quantity and
-oil quality (FFA).
-</p>
+            <!-- Recent Activity -->
+            <div class="section">
+                <h2 class="section-title">Recent Activity</h2>
+                
+                <div class="activity-item">
+                    <div class="activity-dot ready"></div>
+                    <div class="activity-content">
+                        <div class="activity-field">Field F03</div>
+                        <div class="activity-action">Maturity checked</div>
+                    </div>
+                    <div class="activity-time">
+                        <div class="activity-status ready">Ready</div>
+                        <div class="activity-time-text">2h ago</div>
+                    </div>
+                </div>
 
-<label><strong>Waste Cooking Oil Amount (mL):</strong></label>
-<input type="number" id="oilAmount" placeholder="e.g. 12">
+                <div class="activity-item">
+                    <div class="activity-dot transit"></div>
+                    <div class="activity-content">
+                        <div class="activity-field">Field F01</div>
+                        <div class="activity-action">Truck assigned</div>
+                    </div>
+                    <div class="activity-time">
+                        <div class="activity-status transit">In Transit</div>
+                        <div class="activity-time-text">5h ago</div>
+                    </div>
+                </div>
 
-<label><strong>Free Fatty Acid (FFA %):</strong></label>
-<input type="number" id="ffa" placeholder="e.g. 2.5">
+                <div class="activity-item">
+                    <div class="activity-dot notready"></div>
+                    <div class="activity-content">
+                        <div class="activity-field">Field F05</div>
+                        <div class="activity-action">Maturity checked</div>
+                    </div>
+                    <div class="activity-time">
+                        <div class="activity-status notready">Not Ready</div>
+                        <div class="activity-time-text">1d ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<button onclick="calculate()">CALCULATE</button>
+    <!-- Maturity Modal -->
+    <div class="modal" id="maturityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" onclick="closeMaturityModal()">✕</button>
+                <h2>Maturity Check</h2>
+                <p>Test sugarcane juice conductivity</p>
+            </div>
+            <div class="modal-body">
+                <div class="maturity-ready">
+                    <div class="maturity-icon">🍃</div>
+                    <h3>Ready to Test</h3>
+                    <p>Place the probes into a sugarcane juice sample and press start</p>
+                </div>
 
-<div class="result">
+                <div class="how-it-works">
+                    <h4>How it works</h4>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h5>Collect sample</h5>
+                            <p>Cut sugarcane and extract juice</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h5>Insert probes</h5>
+                            <p>Place probes into juice sample</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h5>Measure conductivity</h5>
+                            <p>Device reads electrical conductivity</p>
+                        </div>
+                    </div>
+                </div>
 
-<h3>Chemical Requirements</h3>
-<p><strong>Ethanol / Methanol:</strong> <span id="alcohol">-</span> mL</p>
-<p><strong>NaOH / KOH:</strong> <span id="catalyst">-</span> g</p>
-<p><strong>Natural Surfactant:</strong> <span id="additive">-</span> mL</p>
+                <div class="measurement-input">
+                    <label for="conductivity">Conductivity Reading (0-800)</label>
+                    <input type="number" id="conductivity" min="0" max="800" placeholder="Enter value">
+                    <div class="measurement-info">Below 500 = Ready to Harvest</div>
+                </div>
 
-<h3>Process Parameters</h3>
-<p><strong>Reaction Time:</strong> <span id="time">-</span> minutes</p>
-<p><strong>Reaction Temperature:</strong> <span id="temp">-</span> °C</p>
+                <button class="btn-primary" onclick="startMeasurement()">
+                    <i class="fas fa-bolt"></i> Start Measurement
+                </button>
 
-<h3>Expected Output</h3>
-<p><strong>Expected Yield:</strong> <span id="yield">-</span> %</p>
-<p><strong>Oil Quality:</strong> <span id="quality">-</span></p>
-<p><strong>By-product:</strong> Glycerol</p>
+                <div class="result-message" id="resultMessage"></div>
+            </div>
+        </div>
+    </div>
 
-<p class="note">
-Note: Calculations are rule-based estimates derived from literature-reported
-transesterification behavior.
-</p>
+    <!-- Transport Modal -->
+    <div class="modal" id="transportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" onclick="closeTransportModal()">✕</button>
+                <h2>Request Transport</h2>
+                <p>Find nearby trucks for your harvest</p>
+            </div>
+            <div class="modal-body">
+                <div class="location-card">
+                    <div class="location-icon">📍</div>
+                    <div class="location-info">
+                        <h4>Pickup Location</h4>
+                        <p>Field F03 – Block A</p>
+                    </div>
+                </div>
 
-</div>
-</div>
+                <h3 style="margin-bottom: 1rem;">Available Trucks</h3>
 
-<script>
-function calculate() {
+                <div class="truck-item" onclick="selectTruck(this, 'TR01')">
+                    <div class="truck-icon">🚛</div>
+                    <div class="truck-info">
+                        <div class="truck-name">Truck TR01</div>
+                        <div class="truck-details">📍 2 km away • ⏱️ ~10 min</div>
+                    </div>
+                    <div class="truck-radio"></div>
+                </div>
 
-    let oil = parseFloat(document.getElementById("oilAmount").value);
-    let ffa = parseFloat(document.getElementById("ffa").value);
+                <div class="truck-item" onclick="selectTruck(this, 'TR05')">
+                    <div class="truck-icon">🚛</div>
+                    <div class="truck-info">
+                        <div class="truck-name">Truck TR05</div>
+                        <div class="truck-details">📍 4 km away • ⏱️ ~18 min</div>
+                    </div>
+                    <div class="truck-radio"></div>
+                </div>
 
-    if (isNaN(oil) || oil <= 0) {
-        alert("Please enter a valid Waste Cooking Oil amount");
-        return;
-    }
+                <div class="truck-item" onclick="selectTruck(this, 'TR09')">
+                    <div class="truck-icon">🚛</div>
+                    <div class="truck-info">
+                        <div class="truck-name">Truck TR09</div>
+                        <div class="truck-details">📍 6 km away • ⏱️ ~25 min</div>
+                    </div>
+                    <div class="truck-radio"></div>
+                </div>
 
-    if (isNaN(ffa) || ffa < 0) {
-        alert("Please enter a valid FFA value");
-        return;
-    }
+                <button class="btn-primary" onclick="requestTruck()" style="margin-top: 1.5rem;">
+                    <i class="fas fa-paper-plane"></i> Request Truck
+                </button>
 
-    /* =========================================
-       BASE VALUES (AVERAGE QUALITY OIL)
-       ========================================= */
-    let alcoholFactor = 0.20;
-    let catalystFactor = 0.01;
-    let timeAdjustment = 0;
-    let yieldAdjustment = 0;
-    let quality;
+                <div class="result-message" id="transportResult"></div>
+            </div>
+        </div>
+    </div>
 
-    /* =========================================
-       FFA-BASED QUALITY ADJUSTMENT
-       ========================================= */
-    if (ffa <= 1) {
-        quality = "Good quality oil";
-        alcoholFactor = 0.18;
-        catalystFactor = 0.008;
-        timeAdjustment = -10;
-        yieldAdjustment = +2;
-    } 
-    else if (ffa <= 3) {
-        quality = "Average quality oil";
-        // Standard values retained
-    } 
-    else {
-        quality = "Poor quality oil";
-        alcoholFactor = 0.22;
-        catalystFactor = 0.012;
-        timeAdjustment = +15;
-        yieldAdjustment = -4;
-    }
+    <script>
+        const MATURITY_THRESHOLD = 500;
+        let selectedTruckData = null;
 
-    /* =========================================
-       CHEMICAL CALCULATIONS
-       ========================================= */
-    let alcohol = alcoholFactor * oil;
-    let catalyst = catalystFactor * oil;
-    let additive = 0.03 * oil; // Surfactant constant
+        // Maturity Modal
+        function openMaturityModal() {
+            document.getElementById('maturityModal').classList.add('active');
+        }
 
-    /* =========================================
-       BASE PROCESS PARAMETERS (BATCH SIZE)
-       ========================================= */
-    let time, yieldPercent;
+        function closeMaturityModal() {
+            document.getElementById('maturityModal').classList.remove('active');
+            document.getElementById('resultMessage').classList.remove('show');
+        }
 
-    if (oil <= 10) {
-        time = 45;
-        yieldPercent = 92;
-    } else if (oil <= 50) {
-        time = 60;
-        yieldPercent = 90;
-    } else {
-        time = 75;
-        yieldPercent = 88;
-    }
+        function startMeasurement() {
+            const input = document.getElementById('conductivity');
+            const value = parseInt(input.value);
 
-    /* Apply FFA correction */
-    time = time + timeAdjustment;
-    yieldPercent = yieldPercent + yieldAdjustment;
+            if (isNaN(value) || value < 0 || value > 800) {
+                alert('Please enter a value between 0 and 800');
+                return;
+            }
 
-    let temperature = 60;
+            const resultDiv = document.getElementById('resultMessage');
+            const isReady = value < MATURITY_THRESHOLD;
 
-    /* =========================================
-       DISPLAY RESULTS
-       ========================================= */
-    document.getElementById("alcohol").innerText = alcohol.toFixed(2);
-    document.getElementById("catalyst").innerText = catalyst.toFixed(3);
-    document.getElementById("additive").innerText = additive.toFixed(2);
+            if (isReady) {
+                resultDiv.innerHTML = `
+                    <p>✅ Crop is Ready for Harvest!</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--text-muted);">Conductivity: ${value}</p>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <p>⏳ Crop needs more time</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--text-muted);">Conductivity: ${value}</p>
+                `;
+            }
 
-    document.getElementById("time").innerText = time;
-    document.getElementById("temp").innerText = temperature;
-    document.getElementById("yield").innerText = yieldPercent;
-    document.getElementById("quality").innerText = quality;
-}
-</script>
+            resultDiv.classList.add('show');
+        }
 
+        // Transport Modal
+        function openTransportModal() {
+            document.getElementById('transportModal').classList.add('active');
+        }
+
+        function closeTransportModal() {
+            document.getElementById('transportModal').classList.remove('active');
+            document.getElementById('transportResult').classList.remove('show');
+            selectedTruckData = null;
+        }
+
+        function selectTruck(element, truckId) {
+            document.querySelectorAll('.truck-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+
+            const trucks = {
+                'TR01': { id: 'TR01', distance: 2, time: 10, capacity: '25 tons' },
+                'TR05': { id: 'TR05', distance: 4, time: 18, capacity: '20 tons' },
+                'TR09': { id: 'TR09', distance: 6, time: 25, capacity: '30 tons' }
+            };
+
+            selectedTruckData = trucks[truckId];
+        }
+
+        function requestTruck() {
+            if (!selectedTruckData) {
+                alert('Please select a truck first');
+                return;
+            }
+
+            const resultDiv = document.getElementById('transportResult');
+            resultDiv.innerHTML = `
+                <p>✅ Transport Requested Successfully!</p>
+                <p style="font-size: 0.875rem; margin-top: 0.75rem; color: var(--text-muted);">
+                    Truck ${selectedTruckData.id} assigned<br>
+                    Estimated arrival: ${selectedTruckData.time} minutes<br>
+                    Capacity: ${selectedTruckData.capacity}
+                </p>
+            `;
+            resultDiv.classList.add('show');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('maturityModal').addEventListener('click', function(e) {
+            if (e.target === this) closeMaturityModal();
+        });
+
+        document.getElementById('transportModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTransportModal();
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
