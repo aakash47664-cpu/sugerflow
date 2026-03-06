@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SugarFlow - Farmer Dashboard</title>
+    <title>SugarFlow - Smart Sugarcane System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -13,17 +13,14 @@
         }
 
         :root {
-            --primary: #2d7d5c;
-            --primary-light: #3d9970;
-            --primary-pale: #e8f4f0;
-            --secondary: #059669;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --light: #f9fafb;
-            --text: #1f2937;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --dark: #0f172a;
+            --darker: #0a0f1f;
+            --light: #f1f5f9;
+            --text: #e2e8f0;
+            --text-muted: #cbd5e1;
         }
 
         html {
@@ -32,644 +29,131 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: var(--light);
+            background: linear-gradient(135deg, #0f172a 0%, #0d4d2a 50%, #0a0f1f 100%);
             color: var(--text);
             line-height: 1.6;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 2rem 1.5rem 1rem;
-            border-radius: 0 0 2rem 2rem;
-        }
-
-        .greeting {
-            font-size: 0.875rem;
-            opacity: 0.9;
-            margin-bottom: 0.5rem;
-        }
-
-        .greeting-name {
-            font-size: 1.75rem;
-            font-weight: 700;
-        }
-
-        .weather-card {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            padding: 1rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .weather-item {
+        /* LOGIN PAGE */
+        .login-page {
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .weather-icon {
-            font-size: 1.5rem;
-            opacity: 0.9;
-        }
-
-        .weather-info h3 {
-            font-size: 0.75rem;
-            opacity: 0.85;
-            text-transform: uppercase;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .weather-info p {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        /* Content */
-        .content {
-            padding: 1.5rem;
-        }
-
-        /* Action Cards */
-        .action-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .action-card {
-            background: white;
-            border: 1.5px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .action-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(45, 125, 92, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .action-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.75rem;
-            display: block;
-        }
-
-        .action-icon.maturity {
-            color: var(--primary);
-            background: var(--primary-pale);
-            width: 3rem;
-            height: 3rem;
-            margin: 0 auto 0.75rem;
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
             justify-content: center;
-        }
-
-        .action-icon.truck {
-            color: var(--warning);
-            background: #fef3c7;
-            width: 3rem;
-            height: 3rem;
-            margin: 0 auto 0.75rem;
-            border-radius: 0.75rem;
-            display: flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .action-card h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .action-card p {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        /* Section */
-        .section {
-            margin-bottom: 2rem;
-        }
-
-        .section-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        /* Overview Grid */
-        .overview-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .overview-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            text-align: center;
-        }
-
-        .overview-card.ready {
-            background: #f0fdf4;
-            border-color: var(--success);
-        }
-
-        .overview-card.brix {
-            background: #fefce8;
-            border-color: #fbbf24;
-        }
-
-        .overview-card.transport {
-            background: #eff6ff;
-            border-color: var(--secondary);
-        }
-
-        .overview-card.season {
-            background: white;
-            border: 1px solid var(--border);
-        }
-
-        .overview-icon {
-            font-size: 1.75rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .overview-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .overview-value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .overview-card.brix .overview-value {
-            color: #d97706;
-        }
-
-        .overview-card.transport .overview-value {
-            color: var(--secondary);
-        }
-
-        /* Activity */
-        .activity-item {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .activity-dot {
-            width: 0.75rem;
-            height: 0.75rem;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .activity-dot.ready {
-            background: var(--success);
-        }
-
-        .activity-dot.transit {
-            background: var(--secondary);
-        }
-
-        .activity-dot.notready {
-            background: var(--warning);
-        }
-
-        .activity-content {
-            flex: 1;
-        }
-
-        .activity-field {
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.25rem;
-        }
-
-        .activity-action {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .activity-time {
-            text-align: right;
-            flex-shrink: 0;
-        }
-
-        .activity-status {
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            white-space: nowrap;
-        }
-
-        .activity-status.ready {
-            background: #dcfce7;
-            color: var(--success);
-        }
-
-        .activity-status.transit {
-            background: #dbeafe;
-            color: var(--secondary);
-        }
-
-        .activity-status.notready {
-            background: #fed7aa;
-            color: #d97706;
-        }
-
-        .activity-time-text {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
+            min-height: 100vh;
+            padding: 1.5rem;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            animation: fadeIn 0.3s;
+            z-index: 2000;
         }
 
-        .modal.active {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 600px;
-            border-radius: 2rem 2rem 0 0;
-            animation: slideUp 0.3s;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 2rem 1.5rem;
-            border-radius: 2rem 2rem 0 0;
-        }
-
-        .modal-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-header p {
-            font-size: 0.875rem;
-            opacity: 0.9;
-        }
-
-        .modal-body {
-            padding: 2rem 1.5rem;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .close-modal:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Location Card */
-        .location-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .location-icon {
-            width: 3rem;
-            height: 3rem;
-            background: var(--primary-pale);
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .location-info h4 {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .location-info p {
-            font-size: 1.125rem;
-            font-weight: 600;
-        }
-
-        /* Truck List */
-        .truck-item {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .truck-item:hover {
-            border-color: var(--primary);
-            background: var(--primary-pale);
-        }
-
-        .truck-item.selected {
-            border-color: var(--primary);
-            background: var(--primary-pale);
-        }
-
-        .truck-icon {
-            width: 3rem;
-            height: 3rem;
-            background: var(--primary-pale);
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .truck-info {
-            flex: 1;
-        }
-
-        .truck-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .truck-details {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .truck-radio {
-            width: 1.5rem;
-            height: 1.5rem;
-            border: 2px solid var(--border);
-            border-radius: 50%;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .truck-item.selected .truck-radio {
-            border-color: var(--primary);
-            background: var(--primary);
-        }
-
-        /* Maturity Test */
-        .maturity-ready {
-            text-align: center;
-            padding: 3rem 1.5rem;
-        }
-
-        .maturity-icon {
-            width: 5rem;
-            height: 5rem;
-            background: var(--primary-pale);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin: 0 auto 1.5rem;
-        }
-
-        .maturity-ready h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .maturity-ready p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .how-it-works {
-            background: var(--light);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .how-it-works h4 {
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .step {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .step:last-child {
-            margin-bottom: 0;
-        }
-
-        .step-number {
-            width: 2rem;
-            height: 2rem;
-            background: var(--primary-pale);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: var(--primary);
-            flex-shrink: 0;
-        }
-
-        .step-content h5 {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .step-content p {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        /* Measurement Input */
-        .measurement-input {
-            background: var(--light);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .measurement-input label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 0.875rem;
-            border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            font-family: 'Courier New', monospace;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        input[type="number"]:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .measurement-info {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-        }
-
-        /* Button */
-        button {
-            width: 100%;
-            padding: 1rem;
-            border: none;
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-light);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary {
-            background: var(--light);
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary-pale);
-        }
-
-        /* Result */
-        .result-message {
-            background: #f0fdf4;
-            border: 1px solid var(--success);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            text-align: center;
-            margin-top: 1rem;
+        .login-page.hidden {
             display: none;
         }
 
-        .result-message.show {
+        .login-container {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 2rem;
+            padding: 3rem 2rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-logo h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-logo p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.875rem;
+        }
+
+        .form-group input {
+            padding: 0.875rem;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .form-error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .form-error.show {
             display: block;
-            animation: slideDown 0.3s;
         }
 
         @keyframes slideDown {
@@ -683,348 +167,1550 @@
             }
         }
 
-        .result-message p {
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .btn-signin {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-signin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-signin:active {
+            transform: translateY(0);
+        }
+
+        .demo-accounts {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .demo-accounts h4 {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .demo-account {
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .demo-account:last-child {
+            margin-bottom: 0;
+        }
+
+        .demo-account strong {
+            color: var(--text);
+        }
+
+        .demo-account code {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            color: var(--primary);
+            margin: 0 0.25rem;
+        }
+
+        /* Animated Background */
+        .background-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blur-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .blur-1 {
+            width: 400px;
+            height: 400px;
+            background: #10b981;
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .blur-2 {
+            width: 500px;
+            height: 500px;
+            background: #3b82f6;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 5s;
+        }
+
+        .blur-3 {
+            width: 350px;
+            height: 350px;
+            background: #10b981;
+            top: 40%;
+            right: 10%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        nav.hidden {
+            display: none;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: none;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-badge {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--primary);
+        }
+
+        .signout-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+        }
+
+        .signout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr 1fr;
+                padding: 6rem 2rem;
+            }
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        @media (min-width: 768px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #10b981, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Hero Card */
+        .hero-card {
+            position: relative;
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1), transparent);
+            border-radius: 1.5rem;
+        }
+
+        .hero-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .reading-display {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin-top: 1.5rem;
+        }
+
+        .reading-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-value {
+            font-size: 1.875rem;
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .status-indicator {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.75rem;
+        }
+
+        .status-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.ready {
+            background: var(--primary);
+        }
+
+        .status-dot.pending {
+            background: #f59e0b;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-text.ready {
+            color: var(--primary);
+        }
+
+        .status-text.pending {
+            color: #f59e0b;
+        }
+
+        /* Demo Section */
+        .section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        .demo-container {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 1.5rem;
+            padding: 3rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .slider-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 0.5rem;
+            border-radius: 0.25rem;
+            background: rgba(100, 116, 139, 0.3);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .demo-values {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .value-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .value-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+        }
+
+        .value.pending {
+            color: #f59e0b;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        input[type="number"]::placeholder {
+            color: var(--text-muted);
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+            font-size: 1.125rem;
+        }
+
+        .feature-text h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-text p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Workflow Section */
+        .workflow-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .workflow-buttons {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        .workflow-btn {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text);
+        }
+
+        .workflow-btn:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .workflow-btn.active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+            transform: scale(1.05);
+        }
+
+        .workflow-btn-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .workflow-btn-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .workflow-btn-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .workflow-detail {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .workflow-detail-header {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .workflow-emoji {
+            font-size: 4rem;
+            line-height: 1;
+        }
+
+        .workflow-detail h3 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-stage-label {
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .workflow-detail p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* Transport Section */
+        .transport-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .transport-section.active {
+            display: block;
+        }
+
+        .truck-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .truck-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .truck-card:hover {
+            border-color: var(--primary);
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .truck-card.selected {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.1));
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .truck-emoji {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .truck-id {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .truck-distance {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .truck-time {
+            font-size: 0.875rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .transport-button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b, #0d4d2a);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .modal-body {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .modal-body p {
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+        }
+
+        /* Benefits Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .benefit-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(16, 185, 129, 0.1);
+        }
+
+        .benefit-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .benefit-card p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* CTA Section */
+        .cta-container {
+            background: linear-gradient(135deg, rgba(13, 77, 42, 0.3), rgba(59, 130, 246, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 1.5rem;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .cta-container h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .cta-container p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.3);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        .footer-title {
             color: var(--text);
             font-weight: 600;
         }
 
         /* Responsive */
-        @media (min-width: 650px) {
-            .container {
-                border-radius: 1.5rem;
-                margin-top: 1rem;
-                margin-bottom: 1rem;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        @media (max-width: 768px) {
+            .section {
+                padding: 2rem 1rem;
+            }
+
+            .demo-container {
+                padding: 1.5rem;
+            }
+
+            .workflow-detail-header {
+                gap: 1rem;
+            }
+
+            .workflow-emoji {
+                font-size: 2.5rem;
+            }
+
+            .workflow-detail h3 {
+                font-size: 1.25rem;
             }
         }
 
-        .modal-content {
-            border-radius: 2rem 2rem 0 0;
+        .success-message {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--primary);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            color: var(--primary);
+            text-align: center;
+            animation: slideDown 0.3s ease-out;
         }
 
-        @media (max-width: 600px) {
-            .modal.active {
-                align-items: stretch;
-            }
+        .main-content {
+            display: none;
+        }
 
-            .modal-content {
-                border-radius: 0;
-            }
+        .main-content.active {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="greeting">Good morning,</div>
-            <div class="greeting-name">Farmer Raju 👋</div>
-            <div class="weather-card">
-                <div class="weather-item">
-                    <div class="weather-icon">☀️</div>
-                    <div class="weather-info">
-                        <h3>Today</h3>
-                        <p>32°C Sunny</p>
-                    </div>
-                </div>
-                <div class="weather-item">
-                    <div class="weather-icon">💧</div>
-                    <div class="weather-info">
-                        <h3>Humidity</h3>
-                        <p>65%</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="background-blur">
+        <div class="blur-circle blur-1"></div>
+        <div class="blur-circle blur-2"></div>
+        <div class="blur-circle blur-3"></div>
+    </div>
 
-        <!-- Content -->
-        <div class="content">
-            <!-- Action Cards -->
-            <div class="action-cards">
-                <a class="action-card" onclick="openMaturityModal()">
-                    <div class="action-icon maturity">🍃</div>
-                    <h3>Check Maturity</h3>
-                    <p>Test crop readiness</p>
-                </a>
-                <a class="action-card" onclick="openTransportModal()">
-                    <div class="action-icon truck">🚛</div>
-                    <h3>Request Truck</h3>
-                    <p>Book transport</p>
-                </a>
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-logo">
+                <i class="fas fa-leaf"></i>
+                <h1>SugarFlow</h1>
+                <p>Smart Sugarcane Management System</p>
             </div>
 
-            <!-- Field Overview -->
-            <div class="section">
-                <h2 class="section-title">Field Overview</h2>
-                <div class="overview-grid">
-                    <div class="overview-card ready">
-                        <div class="overview-icon">🍃</div>
-                        <div class="overview-label">Fields Ready</div>
-                        <div class="overview-value">3 of 5</div>
-                    </div>
-                    <div class="overview-card brix">
-                        <div class="overview-icon">🥤</div>
-                        <div class="overview-label">Avg. Brix</div>
-                        <div class="overview-value">18.5°</div>
-                    </div>
-                    <div class="overview-card transport">
-                        <div class="overview-icon">🚛</div>
-                        <div class="overview-label">Pending Transport</div>
-                        <div class="overview-value">2</div>
-                    </div>
-                    <div class="overview-card season">
-                        <div class="overview-icon">📊</div>
-                        <div class="overview-label">This Season</div>
-                        <div class="overview-value">42 tons</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="section">
-                <h2 class="section-title">Recent Activity</h2>
-                
-                <div class="activity-item">
-                    <div class="activity-dot ready"></div>
-                    <div class="activity-content">
-                        <div class="activity-field">Field F03</div>
-                        <div class="activity-action">Maturity checked</div>
-                    </div>
-                    <div class="activity-time">
-                        <div class="activity-status ready">Ready</div>
-                        <div class="activity-time-text">2h ago</div>
-                    </div>
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
                 </div>
 
-                <div class="activity-item">
-                    <div class="activity-dot transit"></div>
-                    <div class="activity-content">
-                        <div class="activity-field">Field F01</div>
-                        <div class="activity-action">Truck assigned</div>
-                    </div>
-                    <div class="activity-time">
-                        <div class="activity-status transit">In Transit</div>
-                        <div class="activity-time-text">5h ago</div>
-                    </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
                 </div>
 
-                <div class="activity-item">
-                    <div class="activity-dot notready"></div>
-                    <div class="activity-content">
-                        <div class="activity-field">Field F05</div>
-                        <div class="activity-action">Maturity checked</div>
-                    </div>
-                    <div class="activity-time">
-                        <div class="activity-status notready">Not Ready</div>
-                        <div class="activity-time-text">1d ago</div>
-                    </div>
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" checked>
+                    <label for="remember">Remember me</label>
+                </div>
+
+                <div class="form-error" id="formError"></div>
+
+                <button type="submit" class="btn-signin">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+
+            <div class="demo-accounts">
+                <h4>📱 Demo Accounts</h4>
+                <div class="demo-account">
+                    <strong>Farmer Raju</strong><br>
+                    <code>raju</code> / <code>raju123</code>
+                </div>
+                <div class="demo-account">
+                    <strong>Farmer Singh</strong><br>
+                    <code>singh</code> / <code>singh123</code>
+                </div>
+                <div class="demo-account">
+                    <strong>Farmer Kumar</strong><br>
+                    <code>kumar</code> / <code>kumar123</code>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Maturity Modal -->
-    <div class="modal" id="maturityModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close-modal" onclick="closeMaturityModal()">✕</button>
-                <h2>Maturity Check</h2>
-                <p>Test sugarcane juice conductivity</p>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Navigation -->
+        <nav id="navbar">
+            <div class="nav-container">
+                <div class="nav-left">
+                    <div class="logo">
+                        <i class="fas fa-leaf"></i>
+                        SugarFlow
+                    </div>
+                    <ul class="nav-links">
+                        <li><a onclick="scrollTo('system')">System</a></li>
+                        <li><a onclick="scrollTo('demo')">Demo</a></li>
+                        <li><a onclick="scrollTo('workflow')">Workflow</a></li>
+                        <li><a onclick="scrollTo('benefits')">Benefits</a></li>
+                    </ul>
+                </div>
+                <div class="nav-right">
+                    <div class="user-badge">
+                        <i class="fas fa-user"></i> <span id="currentUserDisplay">Farmer Raju</span>
+                    </div>
+                    <button class="signout-btn" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Sign Out
+                    </button>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="maturity-ready">
-                    <div class="maturity-icon">🍃</div>
-                    <h3>Ready to Test</h3>
-                    <p>Place the probes into a sugarcane juice sample and press start</p>
-                </div>
+        </nav>
 
-                <div class="how-it-works">
-                    <h4>How it works</h4>
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h5>Collect sample</h5>
-                            <p>Cut sugarcane and extract juice</p>
-                        </div>
+        <!-- Hero Section -->
+        <section class="section" id="system">
+            <div class="hero">
+                <div>
+                    <h1>Smart Sugarcane <br><span class="gradient-text">Maturity & Transport</span></h1>
+                    <p>Real-time maturity detection meets intelligent transport coordination. Reduce sucrose loss and optimize your harvest with precision agriculture.</p>
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="scrollTo('demo')">View Demo</button>
+                        <button class="btn-secondary">Learn More</button>
                     </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h5>Insert probes</h5>
-                            <p>Place probes into juice sample</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h5>Measure conductivity</h5>
-                            <p>Device reads electrical conductivity</p>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-content">
+                        <div class="hero-emoji">🌾</div>
+                        <p>Conductivity-based<br>Maturity Detection</p>
+                        <div class="reading-display">
+                            <div class="reading-label">Device Reading</div>
+                            <div class="reading-value" id="hero-reading">0</div>
+                            <div class="status-indicator">
+                                <div class="status-dot ready" id="hero-dot"></div>
+                                <span class="status-text ready" id="hero-status">Initializing</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="measurement-input">
-                    <label for="conductivity">Conductivity Reading (0-800)</label>
-                    <input type="number" id="conductivity" min="0" max="800" placeholder="Enter value">
-                    <div class="measurement-info">Below 500 = Ready to Harvest</div>
+        <!-- Demo Section -->
+        <section class="section" id="demo">
+            <h2 class="section-title">Try the Device</h2>
+            <div class="demo-container">
+                <div class="demo-grid">
+                    <div class="slider-container">
+                        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Enter or adjust conductivity reading. Threshold: 500 (Ready below 500)</p>
+                        
+                        <div>
+                            <label class="slider-label">Use Slider</label>
+                            <input type="range" id="conductivitySlider" min="0" max="800" value="0">
+                            <div class="range-labels">
+                                <span>Immature (High)</span>
+                                <span>Mature (Low)</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="slider-label">Or Type Value</label>
+                            <input type="number" id="conductivityInput" min="0" max="800" placeholder="Enter value (0-800)" value="0">
+                        </div>
+
+                        <div class="demo-values">
+                            <div class="value-box">
+                                <div class="value-label">Analog Value</div>
+                                <div class="value" id="analogValue">0</div>
+                            </div>
+                            <div class="value-box">
+                                <div class="value-label">Status</div>
+                                <div class="value" id="statusValue">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                                <div class="feature-text">
+                                    <h4>Probe Detection</h4>
+                                    <p>Stainless steel probes measure juice conductivity with high precision</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                                <div class="feature-text">
+                                    <h4>Smart Analysis</h4>
+                                    <p>Microcontroller compares with calibrated threshold instantly</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                                <div class="feature-text">
+                                    <h4>Harvest Decision</h4>
+                                    <p>LED indicator shows maturity status immediately to farmer</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <div class="feature-text">
+                                    <h4>Mobile Integration</h4>
+                                    <p>Results sync to mobile app for transport coordination</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </section>
 
-                <button class="btn-primary" onclick="startMeasurement()">
-                    <i class="fas fa-bolt"></i> Start Measurement
+        <!-- Workflow Section -->
+        <section class="section" id="workflow">
+            <h2 class="section-title">Complete System Workflow</h2>
+            <div class="workflow-buttons">
+                <button class="workflow-btn active" onclick="switchStage(0)">
+                    <span class="workflow-btn-emoji">🌾</span>
+                    <span class="workflow-btn-title">Field Monitoring</span>
+                    <span class="workflow-btn-subtitle">Stage 1</span>
                 </button>
-
-                <div class="result-message" id="resultMessage"></div>
+                <button class="workflow-btn" onclick="switchStage(1)">
+                    <span class="workflow-btn-emoji">✂️</span>
+                    <span class="workflow-btn-title">Harvest Decision</span>
+                    <span class="workflow-btn-subtitle">Stage 2</span>
+                </button>
+                <button class="workflow-btn" onclick="switchStage(2)">
+                    <span class="workflow-btn-emoji">📱</span>
+                    <span class="workflow-btn-title">Transport Request</span>
+                    <span class="workflow-btn-subtitle">Stage 3</span>
+                </button>
+                <button class="workflow-btn" onclick="switchStage(3)">
+                    <span class="workflow-btn-emoji">🚛</span>
+                    <span class="workflow-btn-title">Truck Matching</span>
+                    <span class="workflow-btn-subtitle">Stage 4</span>
+                </button>
+                <button class="workflow-btn" onclick="switchStage(4)">
+                    <span class="workflow-btn-emoji">🏭</span>
+                    <span class="workflow-btn-title">Mill Delivery</span>
+                    <span class="workflow-btn-subtitle">Stage 5</span>
+                </button>
             </div>
-        </div>
+
+            <div class="workflow-detail" id="stage0">
+                <div class="workflow-detail-header">
+                    <div class="workflow-emoji">🌾</div>
+                    <div>
+                        <h3>Field Monitoring</h3>
+                        <div class="workflow-stage-label">Stage 1 - Maturity Detection</div>
+                        <p>Farmer uses handheld device with ESP32, two stainless steel probes, and conductivity circuit. Extracts juice sample and measures electrical conductivity. Device displays maturity status and sends result to mobile app.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-detail" id="stage1" style="display: none;">
+                <div class="workflow-detail-header">
+                    <div class="workflow-emoji">✂️</div>
+                    <div>
+                        <h3>Harvest Decision</h3>
+                        <div class="workflow-stage-label">Stage 2 - Ready for Action</div>
+                        <p>Once maturity is confirmed, crop status shows "Harvest Ready". Farmer proceeds with harvesting the sugarcane, preparing it for immediate transport to ensure maximum freshness and minimize sucrose degradation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-detail" id="stage2" style="display: none;">
+                <div class="workflow-detail-header">
+                    <div class="workflow-emoji">📱</div>
+                    <div>
+                        <h3>Transport Request</h3>
+                        <div class="workflow-stage-label">Stage 3 - Mobile App</div>
+                        <p>After harvesting, farmer opens the mobile app and clicks "Request Transport Truck". The app displays available trucks nearby with distance, estimated arrival time, and truck capacity information. Farmer can select based on preferences.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-detail" id="stage3" style="display: none;">
+                <div class="workflow-detail-header">
+                    <div class="workflow-emoji">🚛</div>
+                    <div>
+                        <h3>Truck Matching & Assignment</h3>
+                        <div class="workflow-stage-label">Stage 4 - Smart Coordination</div>
+                        <p>Try selecting a truck below! Available trucks show with live distances. Once you select, the driver receives notification, accepts pickup, and system confirms assignment with arrival time. Real-time tracking begins.</p>
+                    </div>
+                </div>
+
+                <div class="transport-section active">
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">📍 Available Trucks Near Field F03</h4>
+                    <div class="truck-list" id="truckList"></div>
+                    <div class="transport-button-group">
+                        <button class="btn-primary" onclick="requestTransport()" id="requestBtn">Request Transport</button>
+                        <button class="btn-secondary" onclick="switchStage(4)">Next Stage</button>
+                    </div>
+                    <div id="transportStatus"></div>
+                </div>
+            </div>
+
+            <div class="workflow-detail" id="stage4" style="display: none;">
+                <div class="workflow-detail-header">
+                    <div class="workflow-emoji">🏭</div>
+                    <div>
+                        <h3>Mill Delivery</h3>
+                        <div class="workflow-stage-label">Stage 5 - Sugar Mill</div>
+                        <p>Truck arrives at field and loads the harvested sugarcane. Cane is transported directly to the sugar mill ensuring fresh delivery within hours. Fresh cane reduces sucrose loss and optimizes sugar mill processing efficiency.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="section" id="benefits">
+            <h2 class="section-title">System Benefits</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Accurate Maturity</h3>
+                    <p>Conductivity-based estimation provides precise maturity detection compared to manual methods</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-clock"></i></div>
+                    <h3>Timely Harvest</h3>
+                    <p>Harvest at optimal maturity reduces sucrose loss and improves final sugar yield</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-truck"></i></div>
+                    <h3>Smart Transport</h3>
+                    <p>Real-time truck matching and coordination ensures faster delivery to mills</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h3>Better Recovery</h3>
+                    <p>Fresh delivery to sugar mills optimizes processing and maximizes recovery rates</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section">
+            <div class="cta-container">
+                <h2>Ready to Transform Your Harvest?</h2>
+                <p>Join farmers who are already reducing sucrose loss and optimizing their supply chain with SugarFlow.</p>
+                <button class="btn-primary">Get Started Today</button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p class="footer-title">SugarFlow - Smart Sugarcane System</p>
+            <p>Maturity Detection & Transport Coordination</p>
+            <p style="margin-top: 1.5rem; font-size: 0.875rem;">Optimizing harvest efficiency through precision agriculture technology</p>
+        </footer>
     </div>
 
-    <!-- Transport Modal -->
-    <div class="modal" id="transportModal">
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <button class="close-modal" onclick="closeTransportModal()">✕</button>
-                <h2>Request Transport</h2>
-                <p>Find nearby trucks for your harvest</p>
-            </div>
-            <div class="modal-body">
-                <div class="location-card">
-                    <div class="location-icon">📍</div>
-                    <div class="location-info">
-                        <h4>Pickup Location</h4>
-                        <p>Field F03 – Block A</p>
-                    </div>
-                </div>
-
-                <h3 style="margin-bottom: 1rem;">Available Trucks</h3>
-
-                <div class="truck-item" onclick="selectTruck(this, 'TR01')">
-                    <div class="truck-icon">🚛</div>
-                    <div class="truck-info">
-                        <div class="truck-name">Truck TR01</div>
-                        <div class="truck-details">📍 2 km away • ⏱️ ~10 min</div>
-                    </div>
-                    <div class="truck-radio"></div>
-                </div>
-
-                <div class="truck-item" onclick="selectTruck(this, 'TR05')">
-                    <div class="truck-icon">🚛</div>
-                    <div class="truck-info">
-                        <div class="truck-name">Truck TR05</div>
-                        <div class="truck-details">📍 4 km away • ⏱️ ~18 min</div>
-                    </div>
-                    <div class="truck-radio"></div>
-                </div>
-
-                <div class="truck-item" onclick="selectTruck(this, 'TR09')">
-                    <div class="truck-icon">🚛</div>
-                    <div class="truck-info">
-                        <div class="truck-name">Truck TR09</div>
-                        <div class="truck-details">📍 6 km away • ⏱️ ~25 min</div>
-                    </div>
-                    <div class="truck-radio"></div>
-                </div>
-
-                <button class="btn-primary" onclick="requestTruck()" style="margin-top: 1.5rem;">
-                    <i class="fas fa-paper-plane"></i> Request Truck
-                </button>
-
-                <div class="result-message" id="transportResult"></div>
+            <div class="modal-header" id="modalTitle">✅ Transport Assigned!</div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="closeModal()">Confirm</button>
             </div>
         </div>
     </div>
 
     <script>
-        const MATURITY_THRESHOLD = 500;
-        let selectedTruckData = null;
+        const THRESHOLD = 500;
+        const slider = document.getElementById('conductivitySlider');
+        const input = document.getElementById('conductivityInput');
+        const analogValue = document.getElementById('analogValue');
+        const statusValue = document.getElementById('statusValue');
+        const heroReading = document.getElementById('hero-reading');
+        const heroDot = document.getElementById('hero-dot');
+        const heroStatus = document.getElementById('hero-status');
 
-        // Maturity Modal
-        function openMaturityModal() {
-            document.getElementById('maturityModal').classList.add('active');
-        }
+        // Demo users database
+        const demoUsers = {
+            'raju': { password: 'raju123', name: 'Farmer Raju' },
+            'singh': { password: 'singh123', name: 'Farmer Singh' },
+            'kumar': { password: 'kumar123', name: 'Farmer Kumar' }
+        };
 
-        function closeMaturityModal() {
-            document.getElementById('maturityModal').classList.remove('active');
-            document.getElementById('resultMessage').classList.remove('show');
-        }
+        let currentUser = null;
+        let selectedTruck = null;
 
-        function startMeasurement() {
-            const input = document.getElementById('conductivity');
-            const value = parseInt(input.value);
+        // Truck data
+        const trucks = [
+            { id: 'TR01', distance: 2, time: 15, capacity: '25 tons' },
+            { id: 'TR05', distance: 4, time: 20, capacity: '20 tons' },
+            { id: 'TR09', distance: 6, time: 25, capacity: '30 tons' }
+        ];
 
-            if (isNaN(value) || value < 0 || value > 800) {
-                alert('Please enter a value between 0 and 800');
-                return;
-            }
-
-            const resultDiv = document.getElementById('resultMessage');
-            const isReady = value < MATURITY_THRESHOLD;
-
-            if (isReady) {
-                resultDiv.innerHTML = `
-                    <p>✅ Crop is Ready for Harvest!</p>
-                    <p style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--text-muted);">Conductivity: ${value}</p>
-                `;
+        // Check if user is already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = window.sessionStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = savedUser;
+                showMainContent();
             } else {
-                resultDiv.innerHTML = `
-                    <p>⏳ Crop needs more time</p>
-                    <p style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--text-muted);">Conductivity: ${value}</p>
-                `;
+                showLoginPage();
             }
+        });
 
-            resultDiv.classList.add('show');
+        // Login Handler
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('remember').checked;
+            const formError = document.getElementById('formError');
+
+            // Validate credentials
+            if (demoUsers[username] && demoUsers[username].password === password) {
+                currentUser = username;
+                
+                // Store session
+                window.sessionStorage.setItem('currentUser', username);
+                
+                if (rememberMe) {
+                    window.localStorage.setItem('rememberedUser', username);
+                }
+
+                showMainContent();
+                document.querySelector('.login-form').reset();
+                formError.classList.remove('show');
+            } else {
+                formError.textContent = '❌ Invalid username or password';
+                formError.classList.add('show');
+            }
         }
 
-        // Transport Modal
-        function openTransportModal() {
-            document.getElementById('transportModal').classList.add('active');
+        // Logout Handler
+        function handleLogout() {
+            if (confirm('Are you sure you want to sign out?')) {
+                window.sessionStorage.removeItem('currentUser');
+                currentUser = null;
+                showLoginPage();
+                document.querySelector('.login-form').reset();
+            }
         }
 
-        function closeTransportModal() {
-            document.getElementById('transportModal').classList.remove('active');
-            document.getElementById('transportResult').classList.remove('show');
-            selectedTruckData = null;
+        // Show/Hide Pages
+        function showLoginPage() {
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('mainContent').classList.remove('active');
+            document.getElementById('navbar').classList.add('hidden');
         }
 
-        function selectTruck(element, truckId) {
-            document.querySelectorAll('.truck-item').forEach(item => {
-                item.classList.remove('selected');
+        function showMainContent() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('mainContent').classList.add('active');
+            document.getElementById('navbar').classList.remove('hidden');
+            updateUserDisplay();
+            initializeTrucks();
+            updateConductivity(0);
+        }
+
+        function updateUserDisplay() {
+            const userName = demoUsers[currentUser]?.name || 'Farmer';
+            document.getElementById('currentUserDisplay').textContent = userName;
+        }
+
+        // Initialize truck display
+        function initializeTrucks() {
+            const truckList = document.getElementById('truckList');
+            if (!truckList) return;
+            truckList.innerHTML = '';
+            trucks.forEach(truck => {
+                const card = document.createElement('div');
+                card.className = 'truck-card';
+                card.innerHTML = `
+                    <div class="truck-emoji">🚛</div>
+                    <div class="truck-id">${truck.id}</div>
+                    <div class="truck-distance">📍 ${truck.distance} km away</div>
+                    <div class="truck-time">⏱️ ${truck.time} min arrival</div>
+                    <div class="truck-time">📦 ${truck.capacity}</div>
+                `;
+                card.onclick = () => selectTruck(truck, card);
+                truckList.appendChild(card);
             });
-            element.classList.add('selected');
-
-            const trucks = {
-                'TR01': { id: 'TR01', distance: 2, time: 10, capacity: '25 tons' },
-                'TR05': { id: 'TR05', distance: 4, time: 18, capacity: '20 tons' },
-                'TR09': { id: 'TR09', distance: 6, time: 25, capacity: '30 tons' }
-            };
-
-            selectedTruckData = trucks[truckId];
         }
 
-        function requestTruck() {
-            if (!selectedTruckData) {
-                alert('Please select a truck first');
+        function selectTruck(truck, element) {
+            // Remove previous selection
+            document.querySelectorAll('.truck-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            // Add selection to clicked card
+            element.classList.add('selected');
+            selectedTruck = truck;
+        }
+
+        function requestTransport() {
+            if (!selectedTruck) {
+                alert('Please select a truck first!');
                 return;
             }
 
-            const resultDiv = document.getElementById('transportResult');
-            resultDiv.innerHTML = `
-                <p>✅ Transport Requested Successfully!</p>
-                <p style="font-size: 0.875rem; margin-top: 0.75rem; color: var(--text-muted);">
-                    Truck ${selectedTruckData.id} assigned<br>
-                    Estimated arrival: ${selectedTruckData.time} minutes<br>
-                    Capacity: ${selectedTruckData.capacity}
-                </p>
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <p><strong>Truck Assigned:</strong> ${selectedTruck.id}</p>
+                <p><strong>Location:</strong> Field F03</p>
+                <p><strong>Distance:</strong> ${selectedTruck.distance} km</p>
+                <p><strong>Estimated Arrival:</strong> ${selectedTruck.time} minutes</p>
+                <p><strong>Capacity:</strong> ${selectedTruck.capacity}</p>
+                <p style="margin-top: 1rem; color: var(--primary);"><i class="fas fa-check-circle"></i> Driver has been notified and accepted your request!</p>
             `;
-            resultDiv.classList.add('show');
+            showModal();
+            document.getElementById('transportStatus').innerHTML = `
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i> Transport Confirmed! Truck ${selectedTruck.id} arriving in ${selectedTruck.time} minutes
+                </div>
+            `;
+        }
+
+        function showModal() {
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        // Conductivity update function
+        function updateConductivity(value) {
+            value = Math.max(0, Math.min(800, parseInt(value) || 0));
+            analogValue.textContent = value;
+            heroReading.textContent = value;
+            slider.value = value;
+            input.value = value;
+
+            const isMature = value < THRESHOLD;
+
+            if (isMature) {
+                statusValue.textContent = 'READY';
+                statusValue.style.color = 'var(--primary)';
+                heroStatus.textContent = 'Ready for Harvest';
+                heroStatus.className = 'status-text ready';
+                heroDot.className = 'status-dot ready';
+            } else {
+                statusValue.textContent = 'WAIT';
+                statusValue.style.color = '#f59e0b';
+                heroStatus.textContent = 'Not Mature Yet';
+                heroStatus.className = 'status-text pending';
+                heroDot.className = 'status-dot pending';
+            }
+        }
+
+        // Event listeners
+        slider.addEventListener('input', (e) => updateConductivity(e.target.value));
+        input.addEventListener('input', (e) => updateConductivity(e.target.value));
+
+        // Workflow Stages
+        const stages = [
+            {
+                emoji: '🌾',
+                title: 'Field Monitoring',
+                label: 'Stage 1 - Maturity Detection',
+                description: 'Farmer uses handheld device with ESP32, two stainless steel probes, and conductivity circuit. Extracts juice sample and measures electrical conductivity. Device displays maturity status and sends result to mobile app.'
+            },
+            {
+                emoji: '✂️',
+                title: 'Harvest Decision',
+                label: 'Stage 2 - Ready for Action',
+                description: 'Once maturity is confirmed, crop status shows "Harvest Ready". Farmer proceeds with harvesting the sugarcane, preparing it for immediate transport to ensure maximum freshness.'
+            },
+            {
+                emoji: '📱',
+                title: 'Transport Request',
+                label: 'Stage 3 - Mobile App',
+                description: 'After harvesting, farmer opens the mobile app and requests a transport truck. App displays available trucks nearby with distance information, estimated arrival times, and truck details.'
+            },
+            {
+                emoji: '🚛',
+                title: 'Truck Matching',
+                label: 'Stage 4 - Smart Coordination',
+                description: 'App shows nearby trucks (TR01 at 2km, TR05 at 4km, etc). Farmer selects a truck, driver receives notification, and accepts the pickup request. System confirms assignment and arrival time.'
+            },
+            {
+                emoji: '🏭',
+                title: 'Mill Delivery',
+                label: 'Stage 5 - Sugar Mill',
+                description: 'Truck arrives and loads the harvested sugarcane. Cane is transported directly to the sugar mill, ensuring fresh delivery and reducing sucrose loss during storage.'
+            }
+        ];
+
+        function switchStage(index) {
+            const buttons = document.querySelectorAll('.workflow-btn');
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+
+            // Hide all stages
+            document.querySelectorAll('[id^="stage"]').forEach(el => {
+                el.style.display = 'none';
+            });
+            // Show selected stage
+            document.getElementById(`stage${index}`).style.display = 'block';
+
+            // Initialize trucks when showing stage 3
+            if (index === 3) {
+                initializeTrucks();
+            }
+        }
+
+        function scrollTo(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         // Close modal when clicking outside
-        document.getElementById('maturityModal').addEventListener('click', function(e) {
-            if (e.target === this) closeMaturityModal();
-        });
-
-        document.getElementById('transportModal').addEventListener('click', function(e) {
-            if (e.target === this) closeTransportModal();
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
         });
     </script>
 </body>
